@@ -22,7 +22,7 @@ class MyFrame(wx.Frame):
         file_saveas = menuFile.Append(wx.ID_SAVEAS, "Save As", "Save your .txt-file.")
 
         tools_copy = menuTools.Append(wx.ID_COPY, "Copy", "Copy")
-        tools_copy = menuTools.Append(wx.ID_PASTE,"Paste", "Paste")
+        tools_paste = menuTools.Append(wx.ID_PASTE,"Paste", "Paste")
 
         extra_about = menuExtra.Append(wx.ID_ABOUT, "About", "Information about this program.")
 
@@ -35,9 +35,13 @@ class MyFrame(wx.Frame):
         
         #Bind an event to a menu
         self.Bind(wx.EVT_MENU, self.OnAbout, extra_about)
+
         self.Bind(wx.EVT_MENU, self.OnNew, file_new)
         self.Bind(wx.EVT_MENU, self.OnOpen, file_open)
         self.Bind(wx.EVT_MENU, self.OnSaveAs, file_saveas)
+
+        self.Bind(wx.EVT_MENU, self.OnCopy, tools_copy)
+        self.Bind(wx.EVT_MENU, self.OnPaste, tools_paste)
 
     def OnAbout(self, e):
         #Create & show the "About" messagebox.
@@ -86,6 +90,23 @@ class MyFrame(wx.Frame):
             filehandle.write(contents)
             filehandle.close()
         dlg.Destroy()
+
+    def OnCopy(self, e):
+        text = self.FindFocus()
+        if text is not None:
+            text.Copy()
+    
+    def OnPaste(self, e):
+        text = ""
+        if not wx.TheClipboard.IsOpened():
+            do = wx.TextDataObject()
+            wx.TheClipboard.Open()
+            success = wx.TheClipboard.GetData(do)
+            wx.TheClipboard.Close()
+            if success:
+                self.control.SetValue(self.control.Value + do.GetText())
+            
+        
 
 if __name__ == "__main__":
     # Next, create an application object.
