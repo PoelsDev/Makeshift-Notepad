@@ -1,4 +1,3 @@
-# First things, first. Import the wxPython package.
 import wx, os
 
 class MyFrame(wx.Frame):
@@ -109,7 +108,7 @@ class MyFrame(wx.Frame):
         
 
 if __name__ == "__main__":
-    # Next, create an application object.
+    #Create a wx.Application
     app = wx.App()
     
     #Create an instance of "MyFrame" which makes a wx.Frame
